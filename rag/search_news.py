@@ -11,11 +11,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 def get_search_context(keyword):
     response = get_news_search_response(keyword)
-    items = response["items"]
-    context = ""
-    for document in items:
-        context += document["description"] + "\n"
-    return context
+    return "\n".join(document["description"] + "\n" for document in response["items"])
 
 
 def get_news_search_response(keyword):
