@@ -1,11 +1,22 @@
 import urllib.request
 import urllib.parse
 import ssl
+import json
 
 client_id = "CLIENT_ID"
 client_secret = "CLIENT_SECRET"
 
 ssl._create_default_https_context = ssl._create_unverified_context
+
+
+def get_search_context(keyword):
+    response = get_news_search_response(keyword)
+    items = response["items"]
+    context = ""
+    for document in items:
+        context += document["description"] + "\n"
+    return context
+
 
 def get_news_search_response(keyword):
     query = urllib.parse.quote(keyword)
@@ -18,7 +29,7 @@ def get_news_search_response(keyword):
         code = response.getcode()
         if code == 200:
             response_body = response.read()
-            return response_body.decode('utf-8')
+            return json.loads(response_body.decode('utf-8'))
         else:
             print("Response code:", code)
             return None
