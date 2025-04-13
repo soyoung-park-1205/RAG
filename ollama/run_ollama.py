@@ -1,9 +1,9 @@
 import subprocess
 
 
-def ask_deepseek(prompt: str):
+def ask_model(prompt: str, model_nm: str):
     try:
-        command = f"echo \"{prompt}\" | ollama run deepseek-coder:6.7b"
+        command = f"echo \"{prompt}\" | ollama run {model_nm}"
         result = subprocess.run(command, shell=True, capture_output=True, text=True)
 
         if result.returncode != 0:
