@@ -9,8 +9,8 @@ if __name__ == '__main__':
     questions = file_util.read_lines("./data/test.txt")
     for question in questions:
         """ get main keywords """
-        print(f"=====\n{question}")
         keyword = extract_keyword.get_main_keyword(question)
+        print(f"=====\n{question} -> {keyword}")
         """ get search result context """
         context = search_news.get_search_context(keyword)
         """ get prompt """

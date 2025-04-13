@@ -9,4 +9,8 @@ def get_main_keyword(sentence: str):
 
 
 def get_nouns(sentence: str):
-    return kkma.nouns(sentence)
+    pos_nouns = []
+    for word, pos in kkma.pos(sentence):
+        if pos in ['NNG', 'NNP', 'NR', 'NNB', 'NNM']:
+            pos_nouns.append(word)
+    return pos_nouns
