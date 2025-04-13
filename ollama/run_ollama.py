@@ -1,16 +1,13 @@
-import subprocess
-
+import requests
 
 def ask_model(prompt: str, model_nm: str):
     try:
-        command = f"echo \"{prompt}\" | ollama run {model_nm}"
-        result = subprocess.run(command, shell=True, capture_output=True, text=True)
-
-        if result.returncode != 0:
-            return None
-
-        return result.stdout.strip()
-
+        response = requests.post(
+            "http://localhost:11434/api/generate",
+            json={"model": model_nm, "prompt": prompt, "stream": False},
+            timeout=60
+        )
+        return response.json()["response"]
     except Exception as e:
         print("Exception:", str(e))
         return None
