@@ -9,7 +9,6 @@ app = Flask(__name__)
 
 @app.route("/answer", methods=['GET'])
 def get_answer():
-    args = request.args
     origin = request.args.get("origin", 'false').lower() == 'true'
     model_nm = request.args.get("model", '')
     question = request.args.get("question", '')
