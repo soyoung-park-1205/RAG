@@ -16,16 +16,16 @@ def get_answers():
     results = {
         'origin_true': {
             'llama3.2': '',
-            'deepseek-r1:1.5b': ''
+            'gemma3:1b': ''
         },
         'origin_false': {
             'llama3.2': '',
-            'deepseek-r1:1.5b': ''
+            'gemma3:1b': ''
         }
     }
     
     # Get answers with origin=True
-    for model in ['llama3.2', 'deepseek-r1:1.5b']:
+    for model in ['llama3.2', 'gemma3:1b']:
         response = requests.get(
             'http://127.0.0.1:5000/answer',
             params={
@@ -37,7 +37,7 @@ def get_answers():
         results['origin_true'][model] = response.text
     
     # Get answers with origin=False
-    for model in ['llama3.2', 'deepseek-r1:1.5b']:
+    for model in ['llama3.2', 'gemma3:1b']:
         response = requests.get(
             'http://127.0.0.1:5000/answer',
             params={

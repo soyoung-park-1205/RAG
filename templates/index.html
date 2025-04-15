@@ -27,9 +27,19 @@
             border-radius: 8px;
         }
         .model-title {
-            color: #0d6efd;
+            color: #4a90e2;
             font-weight: bold;
             margin-bottom: 10px;
+        }
+        .section-title {
+            color: #5c9ce6;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .main-title {
+            color: #4a90e2;
+            font-weight: 600;
+            margin-bottom: 30px;
         }
         .progress-container {
             margin: 20px 0;
@@ -40,11 +50,25 @@
             font-size: 0.9em;
             color: #666;
         }
+        .btn-primary {
+            background-color: #4a90e2;
+            border-color: #4a90e2;
+        }
+        .btn-primary:hover {
+            background-color: #357abd;
+            border-color: #357abd;
+        }
+        .progress-bar {
+            background-color: #4a90e2;
+        }
+        .spinner-border {
+            color: #4a90e2 !important;
+        }
     </style>
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">RAG System Interface</h1>
+        <h1 class="main-title text-center">RAG System Interface</h1>
         
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -64,42 +88,42 @@
 
         <div class="row">
             <div class="col-md-6">
-                <h3 class="text-center mb-3">Origin True</h3>
+                <h3 class="section-title text-center">Model Only</h3>
                 <div class="answer-box">
                     <div class="model-title">llama3.2</div>
                     <div id="origin-true-llama"></div>
                     <div class="loading-overlay" id="loading-true-llama">
-                        <div class="spinner-border text-primary" role="status">
+                        <div class="spinner-border text-secondary" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
                 </div>
                 <div class="answer-box">
-                    <div class="model-title">deepseek-r1:1.5b</div>
-                    <div id="origin-true-deepseek"></div>
-                    <div class="loading-overlay" id="loading-true-deepseek">
-                        <div class="spinner-border text-primary" role="status">
+                    <div class="model-title">gemma3:1b</div>
+                    <div id="origin-true-gemma"></div>
+                    <div class="loading-overlay" id="loading-true-gemma">
+                        <div class="spinner-border text-secondary" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
-                <h3 class="text-center mb-3">Origin False</h3>
+                <h3 class="section-title text-center">Model + Naver Search API</h3>
                 <div class="answer-box">
                     <div class="model-title">llama3.2</div>
                     <div id="origin-false-llama"></div>
                     <div class="loading-overlay" id="loading-false-llama">
-                        <div class="spinner-border text-primary" role="status">
+                        <div class="spinner-border text-secondary" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
                 </div>
                 <div class="answer-box">
-                    <div class="model-title">deepseek-r1:1.5b</div>
-                    <div id="origin-false-deepseek"></div>
-                    <div class="loading-overlay" id="loading-false-deepseek">
-                        <div class="spinner-border text-primary" role="status">
+                    <div class="model-title">gemma3:1b</div>
+                    <div id="origin-false-gemma"></div>
+                    <div class="loading-overlay" id="loading-false-gemma">
+                        <div class="spinner-border text-secondary" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
@@ -155,8 +179,8 @@
                 document.getElementById('loading-true-llama').style.display = 'none';
                 updateProgress();
                 
-                document.getElementById('origin-true-deepseek').textContent = data.origin_true['deepseek-r1:1.5b'];
-                document.getElementById('loading-true-deepseek').style.display = 'none';
+                document.getElementById('origin-true-gemma').textContent = data.origin_true['gemma3:1b'];
+                document.getElementById('loading-true-gemma').style.display = 'none';
                 updateProgress();
                 
                 // Update origin false results
@@ -164,8 +188,8 @@
                 document.getElementById('loading-false-llama').style.display = 'none';
                 updateProgress();
                 
-                document.getElementById('origin-false-deepseek').textContent = data.origin_false['deepseek-r1:1.5b'];
-                document.getElementById('loading-false-deepseek').style.display = 'none';
+                document.getElementById('origin-false-gemma').textContent = data.origin_false['gemma3:1b'];
+                document.getElementById('loading-false-gemma').style.display = 'none';
                 updateProgress();
             } catch (error) {
                 console.error('Error:', error);
@@ -176,4 +200,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
