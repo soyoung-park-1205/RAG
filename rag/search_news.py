@@ -2,6 +2,7 @@ import urllib.request
 import urllib.parse
 import ssl
 import json
+from bs4 import BeautifulSoup
 
 client_id = "CLIENT_ID"
 client_secret = "CLIENT_SECRET"
@@ -13,7 +14,12 @@ def get_search_context(keyword):
     if not keyword:
         return ""
     response = get_news_search_response(keyword)
-    return "\n".join(document["description"] for document in response["items"])
+    return "\n".join(delete_html_tag(document["description"]) for document in response["items"])
+
+
+def delete_html_tag(content):
+    soup = BeautifulSoup(content, "lxml")
+    return soup.get_text()
 
 
 def get_news_search_response(keyword):
