@@ -17,10 +17,13 @@ def get_answer():
     else:
         """ get main keywords """
         keyword = extract_keyword.get_main_keyword(question)
-        """ get search result context """
-        context = search_news.get_search_context(keyword)
-        """ get prompt """
-        prompt = prompt_util.build_context_prompt(context, question, keyword)
+        if not keyword:
+            prompt = question
+        else:
+            """ get search result context """
+            context = search_news.get_search_context(keyword)
+            """ get prompt """
+            prompt = prompt_util.build_context_prompt(context, question, keyword)
     return ask_model(prompt, model_nm)
 
 
