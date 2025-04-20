@@ -1,4 +1,6 @@
 from flask import request, Flask
+
+from evaluator.evaluate import judge_result
 from search import search_news
 from util import prompt_util
 from preprocess import extract_keyword
@@ -25,7 +27,8 @@ def get_answer():
             """ get prompt """
             context_prompt = prompt_util.build_context_prompt()
             prompt = context_prompt.format(context=context, question=question, keyword=keyword)
-    return ask_model(prompt, model_nm)
+    response = ask_model(prompt, model_nm)
+    return response
 
 
 if __name__ == "__main__":

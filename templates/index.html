@@ -82,6 +82,37 @@
             border-top: 1px solid #dee2e6;
             margin-top: 10px;
         }
+        .evaluation-container {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #dee2e6;
+        }
+        .evaluation-item {
+            margin-bottom: 8px;
+        }
+        .evaluation-label {
+            font-size: 0.8em;
+            color: #666;
+            margin-bottom: 2px;
+        }
+        .evaluation-bar {
+            height: 15px;
+            background-color: #e9ecef;
+            border-radius: 7px;
+            overflow: hidden;
+            margin-top: 2px;
+        }
+        .evaluation-fill {
+            height: 100%;
+            background-color: #4a90e2;
+            transition: width 0.3s ease-in-out;
+        }
+        .evaluation-score {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 2px;
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -116,6 +147,22 @@
                         </div>
                     </div>
                     <div class="execution-time" id="time-true-llama"></div>
+                    <div class="evaluation-container">
+                        <div class="evaluation-item">
+                            <div class="evaluation-label">Relevance</div>
+                            <div class="evaluation-bar">
+                                <div class="evaluation-fill" id="eval-relevance-true-llama" style="width: 0%"></div>
+                            </div>
+                            <div class="evaluation-score" id="eval-score-relevance-true-llama">0/10</div>
+                        </div>
+                        <div class="evaluation-item">
+                            <div class="evaluation-label">Faithfulness</div>
+                            <div class="evaluation-bar">
+                                <div class="evaluation-fill" id="eval-faithfulness-true-llama" style="width: 0%"></div>
+                            </div>
+                            <div class="evaluation-score" id="eval-score-faithfulness-true-llama">0/10</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="answer-box">
                     <div class="model-title">gemma3:1b</div>
@@ -126,6 +173,22 @@
                         </div>
                     </div>
                     <div class="execution-time" id="time-true-gemma"></div>
+                    <div class="evaluation-container">
+                        <div class="evaluation-item">
+                            <div class="evaluation-label">Relevance</div>
+                            <div class="evaluation-bar">
+                                <div class="evaluation-fill" id="eval-relevance-true-gemma" style="width: 0%"></div>
+                            </div>
+                            <div class="evaluation-score" id="eval-score-relevance-true-gemma">0/10</div>
+                        </div>
+                        <div class="evaluation-item">
+                            <div class="evaluation-label">Faithfulness</div>
+                            <div class="evaluation-bar">
+                                <div class="evaluation-fill" id="eval-faithfulness-true-gemma" style="width: 0%"></div>
+                            </div>
+                            <div class="evaluation-score" id="eval-score-faithfulness-true-gemma">0/10</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-md-6">
@@ -139,6 +202,22 @@
                         </div>
                     </div>
                     <div class="execution-time" id="time-false-llama"></div>
+                    <div class="evaluation-container">
+                        <div class="evaluation-item">
+                            <div class="evaluation-label">Relevance</div>
+                            <div class="evaluation-bar">
+                                <div class="evaluation-fill" id="eval-relevance-false-llama" style="width: 0%"></div>
+                            </div>
+                            <div class="evaluation-score" id="eval-score-relevance-false-llama">0/10</div>
+                        </div>
+                        <div class="evaluation-item">
+                            <div class="evaluation-label">Faithfulness</div>
+                            <div class="evaluation-bar">
+                                <div class="evaluation-fill" id="eval-faithfulness-false-llama" style="width: 0%"></div>
+                            </div>
+                            <div class="evaluation-score" id="eval-score-faithfulness-false-llama">0/10</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="answer-box">
                     <div class="model-title">gemma3:1b</div>
@@ -149,6 +228,22 @@
                         </div>
                     </div>
                     <div class="execution-time" id="time-false-gemma"></div>
+                    <div class="evaluation-container">
+                        <div class="evaluation-item">
+                            <div class="evaluation-label">Relevance</div>
+                            <div class="evaluation-bar">
+                                <div class="evaluation-fill" id="eval-relevance-false-gemma" style="width: 0%"></div>
+                            </div>
+                            <div class="evaluation-score" id="eval-score-relevance-false-gemma">0/10</div>
+                        </div>
+                        <div class="evaluation-item">
+                            <div class="evaluation-label">Faithfulness</div>
+                            <div class="evaluation-bar">
+                                <div class="evaluation-fill" id="eval-faithfulness-false-gemma" style="width: 0%"></div>
+                            </div>
+                            <div class="evaluation-score" id="eval-score-faithfulness-false-gemma">0/10</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -160,6 +255,16 @@
             return seconds.toFixed(2) + 's';
         }
 
+        function updateEvaluation(modelId, evaluation) {
+            const criteria = ['relevance', 'faithfulness'];
+            criteria.forEach(criterion => {
+                const score = evaluation[criterion];
+                const percentage = (score / 10) * 100;
+                document.getElementById(`eval-${criterion}-${modelId}`).style.width = `${percentage}%`;
+                document.getElementById(`eval-score-${criterion}-${modelId}`).textContent = `${score}/10`;
+            });
+        }
+
         document.getElementById('submitBtn').addEventListener('click', async () => {
             const question = document.getElementById('question').value;
             if (!question) {
@@ -167,8 +272,10 @@
                 return;
             }
 
-            // Reset all execution times
+            // Reset all execution times and evaluations
             document.querySelectorAll('.execution-time').forEach(el => el.textContent = '');
+            document.querySelectorAll('.evaluation-fill').forEach(el => el.style.width = '0%');
+            document.querySelectorAll('.evaluation-score').forEach(el => el.textContent = '0/10');
             
             // Show all loading overlays
             document.querySelectorAll('.loading-overlay').forEach(el => el.style.display = 'flex');
@@ -188,19 +295,23 @@
                 document.getElementById('origin-true-llama').textContent = data.origin_true['llama3.2'].answer;
                 document.getElementById('loading-true-llama').style.display = 'none';
                 document.getElementById('time-true-llama').textContent = formatTime(data.origin_true['llama3.2'].time);
+                updateEvaluation('true-llama', data.origin_true['llama3.2'].evaluation);
                 
                 document.getElementById('origin-true-gemma').textContent = data.origin_true['gemma3:1b'].answer;
                 document.getElementById('loading-true-gemma').style.display = 'none';
                 document.getElementById('time-true-gemma').textContent = formatTime(data.origin_true['gemma3:1b'].time);
+                updateEvaluation('true-gemma', data.origin_true['gemma3:1b'].evaluation);
                 
                 // Update origin false results
                 document.getElementById('origin-false-llama').textContent = data.origin_false['llama3.2'].answer;
                 document.getElementById('loading-false-llama').style.display = 'none';
                 document.getElementById('time-false-llama').textContent = formatTime(data.origin_false['llama3.2'].time);
+                updateEvaluation('false-llama', data.origin_false['llama3.2'].evaluation);
                 
                 document.getElementById('origin-false-gemma').textContent = data.origin_false['gemma3:1b'].answer;
                 document.getElementById('loading-false-gemma').style.display = 'none';
                 document.getElementById('time-false-gemma').textContent = formatTime(data.origin_false['gemma3:1b'].time);
+                updateEvaluation('false-gemma', data.origin_false['gemma3:1b'].evaluation);
             } catch (error) {
                 console.error('Error:', error);
                 alert('An error occurred while processing your question');
