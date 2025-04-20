@@ -1,5 +1,10 @@
-def build_context_prompt(context, question, keyword):
-    return f"""
+from click import prompt
+from langchain.prompts import PromptTemplate
+
+
+def build_context_prompt():
+    return PromptTemplate.from_template(
+        """
     당신은 뉴스 기사를 참고하여 사용자의 질문에 답변하는 AI입니다.
 
     다음은 최근의 '{keyword}' 관련 뉴스 기사 내용입니다:
@@ -16,3 +21,4 @@ def build_context_prompt(context, question, keyword):
     - 기사에 없는 내용을 절대 만들어 내지 말 것.
     
     """
+    )

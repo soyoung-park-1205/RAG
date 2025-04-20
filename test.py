@@ -1,5 +1,5 @@
 from util import file_util
-from rag import search_news
+from search import search_news
 from util import prompt_util
 from ollama import run_ollama
 from preprocess import extract_keyword

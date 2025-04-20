@@ -1,5 +1,5 @@
 from flask import request, Flask
-from rag import search_news
+from search import search_news
 from util import prompt_util
 from preprocess import extract_keyword
 from ollama.run_ollama import ask_model
@@ -23,7 +23,8 @@ def get_answer():
             """ get search result context """
             context = search_news.get_search_context(keyword)
             """ get prompt """
-            prompt = prompt_util.build_context_prompt(context, question, keyword)
+            context_prompt = prompt_util.build_context_prompt()
+            prompt = context_prompt.format(context=context, question=question, keyword=keyword)
     return ask_model(prompt, model_nm)
 
 
