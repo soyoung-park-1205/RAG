@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import requests
+import time
 
 app = Flask(__name__)
 
@@ -15,38 +16,44 @@ def get_answers():
     
     results = {
         'origin_true': {
-            'llama3.2': '',
-            'gemma3:1b': ''
+            'llama3.2': {'answer': '', 'time': 0},
+            'gemma3:1b': {'answer': '', 'time': 0}
         },
         'origin_false': {
-            'llama3.2': '',
-            'gemma3:1b': ''
+            'llama3.2': {'answer': '', 'time': 0},
+            'gemma3:1b': {'answer': '', 'time': 0}
         }
     }
     
     # Get answers with origin=True
     for model in ['llama3.2', 'gemma3:1b']:
+        start_time = time.time()
         response = requests.get(
-            'http://127.0.0.1:5000/answer',
+            'http://localhost:5000/answer',
             params={
                 'question': question,
                 'model': model,
                 'origin': 'true'
             }
         )
-        results['origin_true'][model] = response.text
+        end_time = time.time()
+        results['origin_true'][model]['answer'] = response.text
+        results['origin_true'][model]['time'] = end_time - start_time
     
     # Get answers with origin=False
     for model in ['llama3.2', 'gemma3:1b']:
+        start_time = time.time()
         response = requests.get(
-            'http://127.0.0.1:5000/answer',
+            'http://localhost:5000/answer',
             params={
                 'question': question,
                 'model': model,
                 'origin': 'false'
             }
         )
-        results['origin_false'][model] = response.text
+        end_time = time.time()
+        results['origin_false'][model]['answer'] = response.text
+        results['origin_false'][model]['time'] = end_time - start_time
     
     return jsonify(results)
 
