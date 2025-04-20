@@ -64,6 +64,14 @@
         .spinner-border {
             color: #4a90e2 !important;
         }
+        .execution-time {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            font-size: 0.8em;
+            color: #666;
+            padding-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -93,19 +101,21 @@
                     <div class="model-title">llama3.2</div>
                     <div id="origin-true-llama"></div>
                     <div class="loading-overlay" id="loading-true-llama">
-                        <div class="spinner-border text-secondary" role="status">
+                        <div class="spinner-border" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
+                    <div class="execution-time" id="time-true-llama"></div>
                 </div>
                 <div class="answer-box">
                     <div class="model-title">gemma3:1b</div>
                     <div id="origin-true-gemma"></div>
                     <div class="loading-overlay" id="loading-true-gemma">
-                        <div class="spinner-border text-secondary" role="status">
+                        <div class="spinner-border" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
+                    <div class="execution-time" id="time-true-gemma"></div>
                 </div>
             </div>
             <div class="col-md-6">
@@ -114,19 +124,21 @@
                     <div class="model-title">llama3.2</div>
                     <div id="origin-false-llama"></div>
                     <div class="loading-overlay" id="loading-false-llama">
-                        <div class="spinner-border text-secondary" role="status">
+                        <div class="spinner-border" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
+                    <div class="execution-time" id="time-false-llama"></div>
                 </div>
                 <div class="answer-box">
                     <div class="model-title">gemma3:1b</div>
                     <div id="origin-false-gemma"></div>
                     <div class="loading-overlay" id="loading-false-gemma">
-                        <div class="spinner-border text-secondary" role="status">
+                        <div class="spinner-border" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
+                    <div class="execution-time" id="time-false-gemma"></div>
                 </div>
             </div>
         </div>
@@ -136,6 +148,7 @@
     <script>
         let completedRequests = 0;
         const totalRequests = 4;
+        let startTimes = {};
 
         function updateProgress() {
             completedRequests++;
@@ -146,6 +159,16 @@
                 document.querySelector('.progress-container').style.display = 'none';
                 completedRequests = 0;
             }
+        }
+
+        function formatTime(seconds) {
+            return seconds.toFixed(2) + 's';
+        }
+
+        function updateExecutionTime(modelId, startTime) {
+            const endTime = performance.now();
+            const executionTime = (endTime - startTime) / 1000;
+            document.getElementById(`time-${modelId}`).textContent = formatTime(executionTime);
         }
 
         document.getElementById('submitBtn').addEventListener('click', async () => {
@@ -159,6 +182,9 @@
             completedRequests = 0;
             document.querySelector('.progress-container').style.display = 'block';
             document.querySelector('.progress-bar').style.width = '0%';
+            
+            // Reset all execution times
+            document.querySelectorAll('.execution-time').forEach(el => el.textContent = '');
             
             // Show all loading overlays
             document.querySelectorAll('.loading-overlay').forEach(el => el.style.display = 'flex');
@@ -177,19 +203,23 @@
                 // Update origin true results
                 document.getElementById('origin-true-llama').textContent = data.origin_true['llama3.2'];
                 document.getElementById('loading-true-llama').style.display = 'none';
+                updateExecutionTime('true-llama', startTimes['true-llama']);
                 updateProgress();
                 
                 document.getElementById('origin-true-gemma').textContent = data.origin_true['gemma3:1b'];
                 document.getElementById('loading-true-gemma').style.display = 'none';
+                updateExecutionTime('true-gemma', startTimes['true-gemma']);
                 updateProgress();
                 
                 // Update origin false results
                 document.getElementById('origin-false-llama').textContent = data.origin_false['llama3.2'];
                 document.getElementById('loading-false-llama').style.display = 'none';
+                updateExecutionTime('false-llama', startTimes['false-llama']);
                 updateProgress();
                 
                 document.getElementById('origin-false-gemma').textContent = data.origin_false['gemma3:1b'];
                 document.getElementById('loading-false-gemma').style.display = 'none';
+                updateExecutionTime('false-gemma', startTimes['false-gemma']);
                 updateProgress();
             } catch (error) {
                 console.error('Error:', error);
@@ -197,6 +227,12 @@
                 document.querySelectorAll('.loading-overlay').forEach(el => el.style.display = 'none');
                 document.querySelector('.progress-container').style.display = 'none';
             }
+        });
+
+        // Record start times for each model
+        document.querySelectorAll('.loading-overlay').forEach(el => {
+            const modelId = el.id.replace('loading-', '');
+            startTimes[modelId] = performance.now();
         });
     </script>
 </body>
