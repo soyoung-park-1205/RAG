@@ -1,6 +1,5 @@
 from flask import request, Flask
 
-from evaluator.evaluate import judge_result
 from search import search_news
 from util import prompt_util
 from preprocess import extract_keyword
@@ -32,4 +31,4 @@ def get_answer():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run('0.0.0.0', port=5002)

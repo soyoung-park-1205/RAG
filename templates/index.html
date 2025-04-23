@@ -113,6 +113,18 @@
             margin-top: 2px;
             text-align: right;
         }
+        .faithfulness-result {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 2px;
+        }
+        .faithfulness-result.true {
+            color: #28a745;
+        }
+        .faithfulness-result.false {
+            color: #dc3545;
+        }
     </style>
 </head>
 <body>
@@ -149,18 +161,11 @@
                     <div class="execution-time" id="time-true-llama"></div>
                     <div class="evaluation-container">
                         <div class="evaluation-item">
-                            <div class="evaluation-label">Relevance</div>
-                            <div class="evaluation-bar">
-                                <div class="evaluation-fill" id="eval-relevance-true-llama" style="width: 0%"></div>
-                            </div>
-                            <div class="evaluation-score" id="eval-score-relevance-true-llama">0/10</div>
-                        </div>
-                        <div class="evaluation-item">
                             <div class="evaluation-label">Faithfulness</div>
-                            <div class="evaluation-bar">
-                                <div class="evaluation-fill" id="eval-faithfulness-true-llama" style="width: 0%"></div>
+                            <div class="faithfulness-result" id="eval-faithfulness-true-llama">
+                                <span class="result-icon"></span>
+                                <span class="result-text"></span>
                             </div>
-                            <div class="evaluation-score" id="eval-score-faithfulness-true-llama">0/10</div>
                         </div>
                     </div>
                 </div>
@@ -175,18 +180,11 @@
                     <div class="execution-time" id="time-true-gemma"></div>
                     <div class="evaluation-container">
                         <div class="evaluation-item">
-                            <div class="evaluation-label">Relevance</div>
-                            <div class="evaluation-bar">
-                                <div class="evaluation-fill" id="eval-relevance-true-gemma" style="width: 0%"></div>
-                            </div>
-                            <div class="evaluation-score" id="eval-score-relevance-true-gemma">0/10</div>
-                        </div>
-                        <div class="evaluation-item">
                             <div class="evaluation-label">Faithfulness</div>
-                            <div class="evaluation-bar">
-                                <div class="evaluation-fill" id="eval-faithfulness-true-gemma" style="width: 0%"></div>
+                            <div class="faithfulness-result" id="eval-faithfulness-true-gemma">
+                                <span class="result-icon"></span>
+                                <span class="result-text"></span>
                             </div>
-                            <div class="evaluation-score" id="eval-score-faithfulness-true-gemma">0/10</div>
                         </div>
                     </div>
                 </div>
@@ -204,18 +202,11 @@
                     <div class="execution-time" id="time-false-llama"></div>
                     <div class="evaluation-container">
                         <div class="evaluation-item">
-                            <div class="evaluation-label">Relevance</div>
-                            <div class="evaluation-bar">
-                                <div class="evaluation-fill" id="eval-relevance-false-llama" style="width: 0%"></div>
-                            </div>
-                            <div class="evaluation-score" id="eval-score-relevance-false-llama">0/10</div>
-                        </div>
-                        <div class="evaluation-item">
                             <div class="evaluation-label">Faithfulness</div>
-                            <div class="evaluation-bar">
-                                <div class="evaluation-fill" id="eval-faithfulness-false-llama" style="width: 0%"></div>
+                            <div class="faithfulness-result" id="eval-faithfulness-false-llama">
+                                <span class="result-icon"></span>
+                                <span class="result-text"></span>
                             </div>
-                            <div class="evaluation-score" id="eval-score-faithfulness-false-llama">0/10</div>
                         </div>
                     </div>
                 </div>
@@ -230,18 +221,11 @@
                     <div class="execution-time" id="time-false-gemma"></div>
                     <div class="evaluation-container">
                         <div class="evaluation-item">
-                            <div class="evaluation-label">Relevance</div>
-                            <div class="evaluation-bar">
-                                <div class="evaluation-fill" id="eval-relevance-false-gemma" style="width: 0%"></div>
-                            </div>
-                            <div class="evaluation-score" id="eval-score-relevance-false-gemma">0/10</div>
-                        </div>
-                        <div class="evaluation-item">
                             <div class="evaluation-label">Faithfulness</div>
-                            <div class="evaluation-bar">
-                                <div class="evaluation-fill" id="eval-faithfulness-false-gemma" style="width: 0%"></div>
+                            <div class="faithfulness-result" id="eval-faithfulness-false-gemma">
+                                <span class="result-icon"></span>
+                                <span class="result-text"></span>
                             </div>
-                            <div class="evaluation-score" id="eval-score-faithfulness-false-gemma">0/10</div>
                         </div>
                     </div>
                 </div>
@@ -256,13 +240,14 @@
         }
 
         function updateEvaluation(modelId, evaluation) {
-            const criteria = ['relevance', 'faithfulness'];
-            criteria.forEach(criterion => {
-                const score = evaluation[criterion];
-                const percentage = (score / 10) * 100;
-                document.getElementById(`eval-${criterion}-${modelId}`).style.width = `${percentage}%`;
-                document.getElementById(`eval-score-${criterion}-${modelId}`).textContent = `${score}/10`;
-            });
+            // Update faithfulness result
+            const faithfulnessResult = evaluation.faithfulness;
+            const faithfulnessElement = document.getElementById(`eval-faithfulness-${modelId}`);
+            faithfulnessElement.className = `faithfulness-result ${faithfulnessResult ? 'true' : 'false'}`;
+            faithfulnessElement.innerHTML = `
+                <span class="result-icon">${faithfulnessResult ? '✓' : '✗'}</span>
+                <span class="result-text">${faithfulnessResult ? 'True' : 'False'}</span>
+            `;
         }
 
         document.getElementById('submitBtn').addEventListener('click', async () => {

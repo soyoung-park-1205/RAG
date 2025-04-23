@@ -24,7 +24,7 @@ def delete_html_tag(content):
 
 def get_news_search_response(keyword):
     query = urllib.parse.quote(keyword)
-    url = f"https://openapi.naver.com/v1/search/news.json?query={query}&display=10&start=1&sort=sim"
+    url = f"https://openapi.naver.com/v1/search/news.json?query={query}&display=5&start=1&sort=sim"
     request = urllib.request.Request(url)
     request.add_header("X-Naver-Client-Id", client_id)
     request.add_header("X-Naver-Client-Secret", client_secret)

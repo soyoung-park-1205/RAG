@@ -1,16 +1,13 @@
-import json
-from ollama.run_ollama import ask_model
-from util.prompt_util import build_judge_prompt
+from preprocess.extract_keyword import get_nouns, get_nouns_okt
 
 
-def judge_result(question, answer, context, model_nm):
-    evaluate_prompt = build_judge_prompt()
-    prompt = evaluate_prompt.format(question = question,
-                                    context = context,
-                                    answer = answer)
-    print("judge prompt: ", prompt)
-    response = ask_model(prompt, model_nm)
-    print(response)
-    if not response.startswith("{"):
-        response = response[response.index("{") : response.index("}") + 1]
-    return response
+def judge_answer_by_nouns(answer, context):
+    answer_nouns = get_nouns_okt(answer)
+    context_nouns = get_nouns_okt(context)
+    count = len([noun for noun in answer_nouns if noun in context_nouns])
+    if len(answer_nouns) == 0:
+        return False
+    if count / len(answer_nouns) < 0.6:
+        return False
+    else:
+        return True
