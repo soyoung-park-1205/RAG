@@ -1,32 +1,17 @@
 from flask import request, Flask
 
-from search import search_news
-from util import prompt_util
-from preprocess import extract_keyword
-from ollama.run_ollama import ask_model
+from chain.langchain_service import ask_model
+
 
 app = Flask(__name__)
-
 
 @app.route("/answer", methods=['GET'])
 def get_answer():
     origin = request.args.get("origin", 'false').lower() == 'true'
     model_nm = request.args.get("model", '')
     question = request.args.get("question", '')
-    if origin:
-        prompt = question
-    else:
-        """ get main keywords """
-        keyword = extract_keyword.get_main_keyword(question)
-        if not keyword:
-            prompt = question
-        else:
-            """ get search result context """
-            context = search_news.get_search_context(keyword)
-            """ get prompt """
-            context_prompt = prompt_util.build_context_prompt()
-            prompt = context_prompt.format(context=context, question=question, keyword=keyword)
-    response = ask_model(prompt, model_nm)
+
+    response = ask_model(origin, model_nm, question)
     return response
 
 

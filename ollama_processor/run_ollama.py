@@ -1,5 +1,6 @@
 import requests
 
+
 def ask_model(prompt: str, model_nm: str):
     try:
         response = requests.post(
@@ -10,3 +11,4 @@ def ask_model(prompt: str, model_nm: str):
     except Exception as e:
         print("Exception:", str(e))
         return None
+
