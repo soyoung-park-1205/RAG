@@ -1,7 +1,7 @@
 from util import file_util
 from search import search_news
 from util import prompt_util
-from ollama import run_ollama
+from ollama_processor import run_ollama
 from preprocess import extract_keyword
 
 

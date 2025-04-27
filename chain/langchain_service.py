@@ -22,6 +22,11 @@ def ask_model(origin: bool, model_nm: str, question: str):
             "question": question
         })
     else:
-        response = model.invoke(question)
+        prompt = prompt_util.build_question_prompt()
+        chain = prompt | model
+
+        response = chain.invoke({
+            "question": question
+        })
 
     return response

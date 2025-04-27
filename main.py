@@ -1,3 +1,4 @@
+import json
 from flask import request, Flask
 
 from chain.langchain_service import ask_model
@@ -12,6 +13,7 @@ def get_answer():
     question = request.args.get("question", '')
 
     response = ask_model(origin, model_nm, question)
+    response = json.loads(response[response.index('{') : response.rindex('}')+1])
     return response
 
 

@@ -41,7 +41,7 @@ def get_answers():
             }
         )
         end_time = time.time()
-        answer = response.text
+        answer = response.json().get('answer')
         results['origin_true'][model]['answer'] = answer
         results['origin_true'][model]['time'] = end_time - start_time
         keyword = get_main_keyword(question)
@@ -66,7 +66,7 @@ def get_answers():
             }
         )
         end_time = time.time()
-        answer = response.text
+        answer = response.json().get('answer')
         results['origin_false'][model]['answer'] = answer
         results['origin_false'][model]['time'] = end_time - start_time
         keyword = get_main_keyword(question)
