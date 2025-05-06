@@ -33,7 +33,7 @@ def get_answers():
     for model in ['llama3.2', 'gemma3:1b']:
         start_time = time.time()
         response = requests.get(
-            'http://localhost:5002/answer',
+            'http://localhost:15000/answer',
             params={
                 'question': question,
                 'model': model,
@@ -58,7 +58,7 @@ def get_answers():
     for model in ['llama3.2', 'gemma3:1b']:
         start_time = time.time()
         response = requests.get(
-            'http://localhost:5002/answer',
+            'http://localhost:15000/answer',
             params={
                 'question': question,
                 'model': model,

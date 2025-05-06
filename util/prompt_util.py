@@ -15,6 +15,9 @@ def get_response_format():
 def build_context_prompt():
     return PromptTemplate.from_template(
         """
+    이전 대화:
+    {messages}
+    
     당신은 뉴스 기사를 참고하여 사용자의 질문에 답변하는 AI입니다.
 
     다음은 최근의 '{keyword}' 관련 뉴스 기사 내용입니다:
@@ -39,6 +42,8 @@ def build_context_prompt():
 def build_question_prompt():
     return PromptTemplate.from_template(
         """
+    이전 대화:
+    {messages}
     아래 질문에 대해 답변해주세요.
 
     질문: {question}
