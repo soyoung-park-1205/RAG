@@ -17,7 +17,7 @@ def get_answers():
     response = requests.get(
         'http://localhost:15000/answer',
         params={'question': question,
-                'model': 'gemma3:1b',
+                'model': 'gemma3:4b',
                 'origin': 'true'}
     )
     answer = response.json().get('answer', '응답 없음')
