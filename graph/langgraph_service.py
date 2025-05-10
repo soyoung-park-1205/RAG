@@ -7,6 +7,7 @@ from graph.llm import llm_answer, llm_answer_search
 
 from graph.state import MyState
 
+from IPython.display import Image, display
 
 memory = MemorySaver()
 config = {"configurable": {"thread_id": "1"}}
@@ -53,6 +54,7 @@ workflow.set_finish_point("llm_answer")
 workflow.set_finish_point("llm_answer_search")
 app = workflow.compile(checkpointer=memory)
 
+print(app.get_graph(xray=True).draw_mermaid())
 
 def ask_model_search(origin: bool, model_nm: str, question: str):
 
