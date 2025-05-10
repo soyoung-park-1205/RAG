@@ -11,7 +11,7 @@ def llm_answer(state: MyState):
 
 
 def llm_answer_search(state: MyState):
-    prompt = prompt_util.build_question_prompt()
+    prompt = prompt_util.build_context_prompt()
 
     return get_lllm_answer(prompt, state)
 
