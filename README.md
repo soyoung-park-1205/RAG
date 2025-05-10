@@ -27,4 +27,4 @@
 5. llm_answer_search: 검색 내용을 활용하여 LLM 답변 </br>
 
 </br><h3>활용 예시</h3>
-<img src="https://github.com/user-attachments/assets/6eb7ffb5-af21-4396-8711-1e2b106cb899" width="700" height="450"/>
+<img width="495" alt="Image" src="https://github.com/user-attachments/assets/7a8a9260-642a-45ce-8016-8819088abfd5" />
