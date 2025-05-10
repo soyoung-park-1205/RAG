@@ -4,8 +4,8 @@ import ssl
 import json
 from bs4 import BeautifulSoup
 
-client_id = "CLIENT_ID"
-client_secret = "CLIENT_SECRET"
+client_id = "YOUR_CLIENT_ID"
+client_secret = "YOUR_SECRET"
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -14,7 +14,7 @@ def get_search_context(keyword):
     if not keyword:
         return ""
     response = get_news_search_response(keyword)
-    return "\n".join(delete_html_tag(document["description"]) for document in response["items"])
+    return "\n".join(delete_html_tag(document["description"] + document["title"]) for document in response["items"])
 
 
 def delete_html_tag(content):
