@@ -1,11 +1,7 @@
 import json
 from flask import request, Flask
 
-<<<<<<< HEAD
-from chain.langchain_service import ask_model_search
-=======
 from graph.langgraph_service import ask_model_search
->>>>>>> master
 
 
 app = Flask(__name__)

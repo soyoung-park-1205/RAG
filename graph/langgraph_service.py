@@ -1,9 +1,9 @@
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, StateGraph
 
-from graph.retriever import add_main_keyword, add_naver_news_search
-from graph.condition_checker import has_keyword, is_origin
-from graph.llm import call_model
+from graph.retriever import add_main_keyword, add_naver_news_search, empty_node
+from graph.condition_checker import has_keyword, is_origin, needs_search
+from graph.llm import llm_answer, llm_answer_search
 
 from graph.state import MyState
 
@@ -11,32 +11,46 @@ from graph.state import MyState
 memory = MemorySaver()
 config = {"configurable": {"thread_id": "1"}}
 
-
 # LangGraph workflow 정의
 workflow = StateGraph(state_schema=MyState)
+workflow.add_node("needs_search", empty_node)
 # retriever - extract keyword
 workflow.add_node("extract_keyword", add_main_keyword)
 # retriever (NAVER search API)
 workflow.add_node("naver_searcher", add_naver_news_search)
 # call LLM
-workflow.add_node("model", call_model)
+workflow.add_node("llm_answer", llm_answer)
+workflow.add_node("llm_answer_search", llm_answer_search)
 
 # check origin
 workflow.add_conditional_edges(START,
-                               is_origin,
-                               {False : "model",
-                                         True : "extract_keyword"}
-                               )
+   is_origin,
+   {
+       False : "llm_answer",
+       True : "needs_search"
+   }
+)
+# decision to use searched context
+workflow.add_conditional_edges("needs_search",
+    needs_search,
+    {
+        False : "llm_answer",
+        True : "extract_keyword"
+     }
+)
 # has keyword -> search, no keyword -> LLM
 workflow.add_conditional_edges(
     "extract_keyword",
     has_keyword,
-    {False : "model",
-              True : "naver_searcher"
+    {
+        False : "llm_answer",
+        True : "naver_searcher"
      }
 )
-workflow.add_edge("naver_searcher", "model")
-workflow.set_finish_point("model")
+workflow.add_edge("naver_searcher", "llm_answer_search")
+
+workflow.set_finish_point("llm_answer")
+workflow.set_finish_point("llm_answer_search")
 app = workflow.compile(checkpointer=memory)
 
 

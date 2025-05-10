@@ -12,3 +12,6 @@ def add_main_keyword(state: MyState):
 def add_naver_news_search(state: MyState):
     state["context"] = search_news.get_search_context(state["keyword"])
     return state
+
+def empty_node(state: MyState):
+    return state
