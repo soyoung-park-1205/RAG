@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Demo</title>
+  <style>
+    body { font-family: Arial; background: #f0faff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+    .container { width: 400px; background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .title { text-align: center; font-weight: bold; font-size: 24px; color: #3399ff; margin-bottom: 10px; }
+    .chat-box { height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; border: 1px solid #cce7ff; border-radius: 10px; padding: 10px; background: #fff; margin-bottom: 10px; }
+    .message { max-width: 90%; padding: 10px; border-radius: 10px; font-size: 14px; word-break: break-word; }
+    .user { align-self: flex-end; background: #cce7ff; }
+    .bot { align-self: flex-start; background: #e6f2ff; }
+    .input-area { display: flex; gap: 10px; }
+    input { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #cce7ff; outline: none; }
+    button { padding: 10px 20px; background: #3399ff; color: white; border: none; border-radius: 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">Chat Demo</div>
+    <div class="chat-box" id="chatBox"></div>
+    <div class="input-area">
+      <input type="text" id="chatInput" placeholder="메시지를 입력하세요...">
+      <button id="sendBtn">보내기</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chatBox');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    function addMessage(text, type) {
+      const msg = document.createElement('div');
+      msg.className = `message ${type}`;
+      msg.textContent = text;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      addMessage(text, 'user');
+      chatInput.value = '';
+
+      try {
+        const res = await fetch('/get_answers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: text })
+        });
+        const data = await res.json();
+        addMessage(data.answer, 'bot');
+      } catch (error) {
+        addMessage('오류 발생', 'bot');
+      }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+  </script>
+</body>
+</html>
