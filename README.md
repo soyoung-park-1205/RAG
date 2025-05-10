@@ -2,9 +2,6 @@
 <h3>현재 System Architecture (Mermaid로 표현)</h3>
 <img height="500" alt="Image" src="https://github.com/user-attachments/assets/b78fdc9d-1d1d-43e6-b4a1-a24fe3f4340a" />
 
-<h3>System Architecture V1</h3>
-<img src="https://github.com/user-attachments/assets/294655b5-40b1-4c1c-bd05-115137fa99e0" width="500" height="250"/>
-
 </br><h3>Key Technologies</h3>
 | Category      | Details                 |
 |---------------|-------------------------|
