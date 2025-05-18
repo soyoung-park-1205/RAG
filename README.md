@@ -1,6 +1,6 @@
 <h1>Ollama와 네이버 검색 API를 활용한 RAG 시스템 구축</h1>
 <h3>현재 System Architecture (Mermaid로 표현)</h3>
-<img height="500" alt="Image" src="https://github.com/user-attachments/assets/b78fdc9d-1d1d-43e6-b4a1-a24fe3f4340a" />
+<img width="500" alt="Image" src="https://github.com/user-attachments/assets/b205f3e5-66a5-4cb2-adb2-4ea9f1aed38d" />
 
 </br><h3>Key Technologies</h3>
 | Category      | Details                 |
