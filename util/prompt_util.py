@@ -20,6 +20,14 @@ def get_search_check_format():
 
     return output_parser.get_format_instructions()
 
+def get_relevance_check_format():
+    response_schemas = [
+        ResponseSchema(name="relevance", description="가능할 경우 0, 불가능할 경우 1")
+    ]
+
+    output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
+
+    return output_parser.get_format_instructions()
 
 def build_context_prompt():
     return PromptTemplate.from_template(
@@ -89,4 +97,16 @@ def build_search_decision_prompt():
     {format_instructions}
     """,
         partial_variables = {"format_instructions": get_search_check_format()}
+    )
+
+def build_doc_relevance_prompt():
+    return PromptTemplate.from_template(
+        """
+        {document} 내에 있는 내용으로 
+        {question} 질문에 대한 답변이 가능한지 여부를 리턴해주세요.
+        답변이 가능할 경우 1, 가능하지 않을 경우 0을 리턴해주세요.
+        
+        {format_instructions}
+        """,
+        partial_variables = {"format_instructions": get_relevance_check_format()}
     )

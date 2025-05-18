@@ -2,12 +2,11 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, StateGraph
 
 from graph.retriever import add_main_keyword, add_naver_news_search, empty_node
-from graph.condition_checker import has_keyword, is_origin, needs_search
+from graph.condition_checker import has_keyword, is_origin, needs_search, is_relevance
 from graph.llm import llm_answer, llm_answer_search
 
 from graph.state import MyState
 
-from IPython.display import Image, display
 
 memory = MemorySaver()
 config = {"configurable": {"thread_id": "1"}}
@@ -48,7 +47,14 @@ workflow.add_conditional_edges(
         True : "naver_searcher"
      }
 )
-workflow.add_edge("naver_searcher", "llm_answer_search")
+# relevance check
+workflow.add_conditional_edges(
+    "naver_searcher",
+        is_relevance,
+           {
+               False : "llm_answer",
+               True: "llm_answer_search"
+           })
 
 workflow.set_finish_point("llm_answer")
 workflow.set_finish_point("llm_answer_search")
@@ -57,7 +63,6 @@ app = workflow.compile(checkpointer=memory)
 print(app.get_graph(xray=True).draw_mermaid())
 
 def ask_model_search(origin: bool, model_nm: str, question: str):
-
     input_data = {
         "question": question,
         "messages": [],
@@ -69,7 +74,6 @@ def ask_model_search(origin: bool, model_nm: str, question: str):
     final_state = None
     for event in app.stream(input_data, config, stream_mode="values"):
         final_state = event
-
     if final_state:
         return final_state.get("response", "")
     else:
