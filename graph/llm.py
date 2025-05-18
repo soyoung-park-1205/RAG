@@ -6,19 +6,15 @@ from langchain_ollama.llms import OllamaLLM
 
 def llm_answer(state: MyState):
     prompt = prompt_util.build_question_prompt()
-
-    return get_lllm_answer(prompt, state)
+    return get_llm_answer(prompt, state)
 
 
 def llm_answer_search(state: MyState):
     prompt = prompt_util.build_context_prompt()
+    return get_llm_answer(prompt, state)
 
-    return get_lllm_answer(prompt, state)
 
-
-def get_lllm_answer(prompt, state: MyState):
-    # messages만 추출
-    current_messages = state["messages"]
+def get_llm_answer(prompt, state: MyState):
 
     prompt_str = prompt.format(
         question=state["question"],
