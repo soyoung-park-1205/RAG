@@ -18,6 +18,7 @@ workflow.add_node("needs_search", empty_node)
 workflow.add_node("extract_keyword", add_main_keyword)
 # retriever (NAVER search API)
 workflow.add_node("naver_searcher", add_naver_news_search)
+workflow.add_node("relevance_check", empty_node)
 # call LLM
 workflow.add_node("llm_answer", llm_answer)
 workflow.add_node("llm_answer_search", llm_answer_search)
@@ -47,9 +48,10 @@ workflow.add_conditional_edges(
         True : "naver_searcher"
      }
 )
+workflow.add_edge("naver_searcher", "relevance_check")
 # relevance check
 workflow.add_conditional_edges(
-    "naver_searcher",
+    "relevance_check",
         is_relevance,
            {
                False : "llm_answer",
