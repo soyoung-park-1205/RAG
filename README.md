@@ -1,6 +1,6 @@
 <h1>Ollama와 네이버 검색 API를 활용한 RAG 시스템 구축</h1>
 <h3>현재 System Architecture (Mermaid로 표현)</h3>
-<img width="500" alt="Image" src="https://github.com/user-attachments/assets/b205f3e5-66a5-4cb2-adb2-4ea9f1aed38d" />
+<img width="450" alt="Image" src="https://github.com/user-attachments/assets/b205f3e5-66a5-4cb2-adb2-4ea9f1aed38d" />
 
 </br><h3>Key Technologies</h3>
 | Category      | Details                 |
@@ -9,10 +9,10 @@
 | **Framework** | Flask                   |
 | **Library**   | LangGraph               |
 | **Tool**      | Ollama                  |
-| **Models**    | Llama 3.2, Gemma 3.1    |
+| **Models**    | gpt-oss:20b, Gemma 3:1b    |
 
 </br><h3>환경 구축</h3>
-1. Ollama를 활용하여 로컬 환경에서 gemma3, llama3.2 LLM 모델 구동 환경을 구축</br>
+1. Ollama를 활용하여 로컬 환경에서 gemma3, gpt-oss LLM 모델 구동 환경을 구축</br>
 2. LangGraph를 활용해 RAG 시스템 구축 (LangChain(V1)에서 변경)
 3. MemorySaver로 이전 대화 기억
 
@@ -25,4 +25,5 @@
 6. llm_answer_search: 검색 내용을 활용하여 LLM 답변 </br>
 
 </br><h3>활용 예시</h3>
-<img width="350" alt="Image" src="https://github.com/user-attachments/assets/7a8a9260-642a-45ce-8016-8819088abfd5" />
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/bdafa570-33de-45a8-af65-7c218d907f72" />
+* Faitfulness(충실성)은 검색 결과와 실제 응답 결과의 유사성을 추출된 명사를 기반으로 계산한 것으로 복잡한 질문일수록 정확도가 떨어질 수 있습니다.
