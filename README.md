@@ -9,7 +9,7 @@
 | **Framework** | Flask                   |
 | **Library**   | LangGraph               |
 | **Tool**      | Ollama                  |
-| **Models**    | Llama 3.2, Gemma 3.1    |
+| **Models**    | gpt-oss:20b, Gemma 3:1b    |
 
 </br><h3>환경 구축</h3>
 1. Ollama를 활용하여 로컬 환경에서 gemma3, llama3.2 LLM 모델 구동 환경을 구축</br>
