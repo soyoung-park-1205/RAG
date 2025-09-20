@@ -151,25 +151,6 @@
             <div class="col-md-6">
                 <h3 class="section-title text-center">Model Only</h3>
                 <div class="answer-box">
-                    <div class="model-title">llama3.2</div>
-                    <div id="origin-true-llama" class="answer-text"></div>
-                    <div class="loading-overlay" id="loading-true-llama">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    <div class="execution-time" id="time-true-llama"></div>
-                    <div class="evaluation-container">
-                        <div class="evaluation-item">
-                            <div class="evaluation-label">Faithfulness</div>
-                            <div class="faithfulness-result" id="eval-faithfulness-true-llama">
-                                <span class="result-icon"></span>
-                                <span class="result-text"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="answer-box">
                     <div class="model-title">gemma3:1b</div>
                     <div id="origin-true-gemma" class="answer-text"></div>
                     <div class="loading-overlay" id="loading-true-gemma">
@@ -188,28 +169,28 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <h3 class="section-title text-center">Model + Naver Search API</h3>
                 <div class="answer-box">
-                    <div class="model-title">llama3.2</div>
-                    <div id="origin-false-llama"></div>
-                    <div class="loading-overlay" id="loading-false-llama">
+                    <div class="model-title">gpt-oss:20b</div>
+                    <div id="origin-true-gpt" class="answer-text"></div>
+                    <div class="loading-overlay" id="loading-true-gpt">
                         <div class="spinner-border" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
-                    <div class="execution-time" id="time-false-llama"></div>
+                    <div class="execution-time" id="time-true-gpt"></div>
                     <div class="evaluation-container">
                         <div class="evaluation-item">
                             <div class="evaluation-label">Faithfulness</div>
-                            <div class="faithfulness-result" id="eval-faithfulness-false-llama">
+                            <div class="faithfulness-result" id="eval-faithfulness-true-gpt">
                                 <span class="result-icon"></span>
                                 <span class="result-text"></span>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-6">
+                <h3 class="section-title text-center">Model + Naver Search API</h3>
                 <div class="answer-box">
                     <div class="model-title">gemma3:1b</div>
                     <div id="origin-false-gemma"></div>
@@ -223,6 +204,25 @@
                         <div class="evaluation-item">
                             <div class="evaluation-label">Faithfulness</div>
                             <div class="faithfulness-result" id="eval-faithfulness-false-gemma">
+                                <span class="result-icon"></span>
+                                <span class="result-text"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="answer-box">
+                    <div class="model-title">gpt-oss:20b</div>
+                    <div id="origin-false-gpt"></div>
+                    <div class="loading-overlay" id="loading-false-gpt">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="execution-time" id="time-false-gpt"></div>
+                    <div class="evaluation-container">
+                        <div class="evaluation-item">
+                            <div class="evaluation-label">Faithfulness</div>
+                            <div class="faithfulness-result" id="eval-faithfulness-false-gpt">
                                 <span class="result-icon"></span>
                                 <span class="result-text"></span>
                             </div>
@@ -277,26 +277,27 @@
                 const data = await response.json();
                 
                 // Update origin true results
-                document.getElementById('origin-true-llama').textContent = data.origin_true['llama3.2'].answer;
-                document.getElementById('loading-true-llama').style.display = 'none';
-                document.getElementById('time-true-llama').textContent = formatTime(data.origin_true['llama3.2'].time);
-                updateEvaluation('true-llama', data.origin_true['llama3.2'].evaluation);
-                
                 document.getElementById('origin-true-gemma').textContent = data.origin_true['gemma3:1b'].answer;
                 document.getElementById('loading-true-gemma').style.display = 'none';
                 document.getElementById('time-true-gemma').textContent = formatTime(data.origin_true['gemma3:1b'].time);
                 updateEvaluation('true-gemma', data.origin_true['gemma3:1b'].evaluation);
+                console.log("data, origin_true");
+                console.log(data.origin_true);
+                document.getElementById('origin-true-gpt').textContent = data.origin_true['gpt-oss:20b'].answer;
+                document.getElementById('loading-true-gpt').style.display = 'none';
+                document.getElementById('time-true-gpt').textContent = formatTime(data.origin_true['gpt-oss:20b'].time);
+                updateEvaluation('true-gpt', data.origin_true['gpt-oss:20b'].evaluation);
                 
                 // Update origin false results
-                document.getElementById('origin-false-llama').textContent = data.origin_false['llama3.2'].answer;
-                document.getElementById('loading-false-llama').style.display = 'none';
-                document.getElementById('time-false-llama').textContent = formatTime(data.origin_false['llama3.2'].time);
-                updateEvaluation('false-llama', data.origin_false['llama3.2'].evaluation);
-                
                 document.getElementById('origin-false-gemma').textContent = data.origin_false['gemma3:1b'].answer;
                 document.getElementById('loading-false-gemma').style.display = 'none';
                 document.getElementById('time-false-gemma').textContent = formatTime(data.origin_false['gemma3:1b'].time);
                 updateEvaluation('false-gemma', data.origin_false['gemma3:1b'].evaluation);
+                
+                document.getElementById('origin-false-gpt').textContent = data.origin_false['gpt-oss:20b'].answer;
+                document.getElementById('loading-false-gpt').style.display = 'none';
+                document.getElementById('time-false-gpt').textContent = formatTime(data.origin_false['gpt-oss:20b'].time);
+                updateEvaluation('false-gpt', data.origin_false['gpt-oss:20b'].evaluation);
             } catch (error) {
                 console.error('Error:', error);
                 alert('An error occurred while processing your question');
