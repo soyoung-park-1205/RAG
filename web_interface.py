@@ -20,17 +20,17 @@ def get_answers():
     
     results = {
         'origin_true': {
-            'llama3.2': {'answer': '', 'time': 0, 'evaluation': {'faithfulness': False}},
-            'gemma3:1b': {'answer': '', 'time': 0, 'evaluation': {'faithfulness': False}}
+            'gemma3:1b': {'answer': '', 'time': 0, 'evaluation': {'faithfulness': False}},
+            'gpt-oss:20b': {'answer': '', 'time': 0, 'evaluation': {'faithfulness': False}}
         },
         'origin_false': {
-            'llama3.2': {'answer': '', 'time': 0, 'evaluation': {'faithfulness': False}},
-            'gemma3:1b': {'answer': '', 'time': 0, 'evaluation': {'faithfulness': False}}
+            'gemma3:1b': {'answer': '', 'time': 0, 'evaluation': {'faithfulness': False}},
+            'gpt-oss:20b': {'answer': '', 'time': 0, 'evaluation': {'faithfulness': False}}
         }
     }
     
     # Get answers with origin=True
-    for model in ['llama3.2', 'gemma3:1b']:
+    for model in ['gemma3:1b', 'gpt-oss:20b']:
         start_time = time.time()
         response = requests.get(
             'http://localhost:15000/answer',
@@ -55,7 +55,7 @@ def get_answers():
         }
     
     # Get answers with origin=False
-    for model in ['llama3.2', 'gemma3:1b']:
+    for model in ['gemma3:1b', 'gpt-oss:20b']:
         start_time = time.time()
         response = requests.get(
             'http://localhost:15000/answer',
