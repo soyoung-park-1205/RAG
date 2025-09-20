@@ -12,7 +12,7 @@
 | **Models**    | gpt-oss:20b, Gemma 3:1b    |
 
 </br><h3>환경 구축</h3>
-1. Ollama를 활용하여 로컬 환경에서 gemma3, llama3.2 LLM 모델 구동 환경을 구축</br>
+1. Ollama를 활용하여 로컬 환경에서 gemma3, gpt-oss LLM 모델 구동 환경을 구축</br>
 2. LangGraph를 활용해 RAG 시스템 구축 (LangChain(V1)에서 변경)
 3. MemorySaver로 이전 대화 기억
 
