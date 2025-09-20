@@ -51,7 +51,7 @@ def get_answers():
             searched_context = get_search_context(keyword)
         results['origin_true'][model]['evaluation'] = {
             #'faithfulness': eval_result.get('faithfulness', 0)
-            'faithfulness' : judge_answer_by_nouns(answer, searched_context)
+            'faithfulness' : judge_answer_by_nouns(answer, searched_context, question)
         }
     
     # Get answers with origin=False
@@ -75,9 +75,8 @@ def get_answers():
         else:
             searched_context = get_search_context(keyword)
         results['origin_false'][model]['evaluation'] = {
-            'faithfulness': judge_answer_by_nouns(answer, searched_context)
+            'faithfulness': judge_answer_by_nouns(answer, searched_context, question)
         }
-    
     return jsonify(results)
 
 if __name__ == '__main__':
