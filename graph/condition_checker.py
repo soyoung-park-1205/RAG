@@ -40,4 +40,4 @@ def is_relevance(state: MyState):
     model = OllamaLLM(model=state["model_nm"], temperature=0.5)
     response = model.invoke(prompt_str)
     result_json = json.loads(response[response.index('{'): response.rindex('}') + 1])
-    return True if result_json['relevance'] == 1 else False
+    return True if result_json['relevance'] in [1, "1"] else False
