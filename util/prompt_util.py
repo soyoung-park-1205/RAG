@@ -22,7 +22,7 @@ def get_search_check_format():
 
 def get_relevance_check_format():
     response_schemas = [
-        ResponseSchema(name="relevance", description="가능할 경우 0, 불가능할 경우 1")
+        ResponseSchema(name="relevance", description="가능할 경우 1, 불가능할 경우 0")
     ]
 
     output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
