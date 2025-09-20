@@ -6,11 +6,7 @@ from preprocess import extract_keyword
 
 
 if __name__ == '__main__':
-<<<<<<< HEAD
-    questions = file_util.read_lines("./data/test.txt")
-=======
     questions = file_util.read_lines("data/test.txt")
->>>>>>> master
     for question in questions:
         """ get main keywords """
         keyword = extract_keyword.get_main_keyword(question)
@@ -23,12 +19,6 @@ if __name__ == '__main__':
         print("===")
         print("llama origin: ", run_ollama.ask_model(question, "llama3.2"))
         print("===")
-<<<<<<< HEAD
-        print("deepseek RAG answer: ", run_ollama.ask_model(prompt, "deepseek-r1:1.5b"))
-        print("===")
-        print("llama RAG answer: ", run_ollama.ask_model(prompt, "llama3.2"))
-=======
         print("deepseek src answer: ", run_ollama.ask_model(prompt, "deepseek-r1:1.5b"))
         print("===")
         print("llama src answer: ", run_ollama.ask_model(prompt, "llama3.2"))
->>>>>>> master
