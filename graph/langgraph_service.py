@@ -27,8 +27,8 @@ workflow.add_node("llm_answer_search", llm_answer_search)
 workflow.add_conditional_edges(START,
    is_origin,
    {
-       False : "llm_answer",
-       True : "needs_search"
+       False : "needs_search",
+       True : "llm_answer"
    }
 )
 # decision to use searched context
